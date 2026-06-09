@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
 import { useAuth } from '@/hooks/useAuth'
 import { LogoutModal } from '@/components/auth/LogoutModal'
 
@@ -11,41 +10,60 @@ export function Topbar() {
 
   return (
     <>
+      {/*
+        Spec:
+          width: 1366px (full); height: 80px
+          background: transparent url('header.png') 0% 0% no-repeat padding-box
+          — Use header.png as the ONLY background, no color overlay
+      */}
       <header
-        className="h-16 flex items-center justify-between px-6 flex-shrink-0 relative overflow-hidden"
-        style={{ background: '#2C4A2E' }}
+        className="flex-shrink-0 flex items-center justify-between px-8 w-full"
+        style={{
+          height: '80px',
+          backgroundImage: 'url(/images/header.png)',
+          backgroundSize: '100% 100%',     // stretch to fill exactly
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: '0% 0%',
+          backgroundOrigin: 'padding-box',
+        }}
       >
-        {/* Background header image */}
-        <Image
-          src="/images/header.png"
-          alt=""
-          fill
-          className="object-cover opacity-60 pointer-events-none"
-          aria-hidden="true"
-          priority
-        />
-
         {/* Left — Program title */}
-        <span className="relative z-10 text-white font-bold text-base tracking-wide">
+        <span
+          className="font-bold tracking-wide"
+          style={{ color: '#FFFFFF', fontSize: '18px', fontFamily: 'Poppins, sans-serif' }}
+        >
           Inua Mkulima Subsidy Program
         </span>
 
-        {/* Right — Logged in + logout */}
-        <div className="relative z-10 flex items-center gap-4">
-          <span className="text-white text-sm">
+        {/* Right — Logged in label + Logout button */}
+        <div className="flex items-center gap-4">
+          <span style={{ color: '#FFFFFF', fontSize: '14px' }}>
             Logged In As:{' '}
-            <span className="font-bold uppercase tracking-wide">
+            <span className="font-bold uppercase tracking-widest">
               {user?.firstName ?? user?.username ?? 'User'}
             </span>
           </span>
+
+          {/* Logout button — white border, icon + text */}
           <button
             id="logout-trigger-btn"
             onClick={() => setShowLogout(true)}
-            aria-label="Logout"
-            className="flex items-center gap-2 text-white text-sm font-bold px-4 py-2 rounded-md transition-all duration-200 hover:bg-white/10"
-            style={{ border: '1.5px solid rgba(255,255,255,0.6)' }}
+            aria-label="Open logout dialog"
+            className="flex items-center gap-2 font-bold transition-all duration-200 hover:bg-white/10"
+            style={{
+              color: '#FFFFFF',
+              fontSize: '14px',
+              border: '1.5px solid rgba(255,255,255,0.7)',
+              borderRadius: '6px',
+              padding: '6px 16px',
+            }}
           >
-            <Image src="/images/sign-out.svg" alt="" width={16} height={16} aria-hidden="true" />
+            {/* Logout icon — inline SVG so no broken image risk */}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
             Logout
           </button>
         </div>
