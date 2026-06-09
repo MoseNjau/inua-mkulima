@@ -12,6 +12,7 @@ interface UseProductSelectionReturn {
   totalDeduction: number
   totalAmount:    number
   clearCart:      () => void
+  isHydrated:     boolean
 }
 
 export function useProductSelection(): UseProductSelectionReturn {
@@ -78,5 +79,5 @@ export function useProductSelection(): UseProductSelectionReturn {
   const totalDeduction = items.reduce((sum, i) => sum + i.deduction * i.quantity, 0)
   const totalAmount    = items.reduce((sum, i) => sum + i.product.price * i.quantity, 0)
 
-  return { items, addItem, removeItem, updateQty, totalDeduction, totalAmount, clearCart }
+  return { items, addItem, removeItem, updateQty, totalDeduction, totalAmount, clearCart, isHydrated: hydrated }
 }

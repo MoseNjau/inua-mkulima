@@ -24,7 +24,7 @@ function todayFormatted(): string {
 export default function SummaryPage() {
   const router = useRouter()
   const { user } = useAuth()
-  const { items, removeItem, totalDeduction, totalAmount } = useProductSelection()
+  const { items, removeItem, totalDeduction, totalAmount, isHydrated } = useProductSelection()
 
   const [farmerName,  setFarmerName]  = useState('')
   const [farmerId,    setFarmerId]    = useState('')
@@ -87,8 +87,13 @@ export default function SummaryPage() {
     }, 1200)
   }
 
-  if (items.length === 0) {
-    router.replace('/dashboard/products')
+  useEffect(() => {
+    if (isHydrated && items.length === 0) {
+      router.replace('/dashboard/products')
+    }
+  }, [items.length, isHydrated, router])
+
+  if (!isHydrated || items.length === 0) {
     return null
   }
 

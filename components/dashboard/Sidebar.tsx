@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { cn } from '@/lib/utils'
 
 const navItems = [
   { label: 'Dashboard',    href: '/dashboard' },
@@ -14,7 +13,7 @@ export function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <aside className="w-52 bg-white border-r border-brand-border flex flex-col flex-shrink-0">
+    <aside className="w-52 bg-white border-r border-gray-200 flex flex-col flex-shrink-0">
       <nav className="flex-1 pt-6" aria-label="Sidebar navigation">
         {navItems.map(({ label, href }) => {
           const isActive =
@@ -27,12 +26,15 @@ export function Sidebar() {
               key={label}
               href={href}
               id={`sidebar-${label.toLowerCase()}-link`}
-              className={cn(
-                'flex items-center px-6 py-3 text-sm transition-all duration-150',
-                isActive
-                  ? 'text-brand-ink font-bold border-l-4 border-brand-gold bg-gray-50'
-                  : 'text-brand-muted font-medium border-l-4 border-transparent hover:bg-gray-50 hover:text-brand-ink',
-              )}
+              className="flex items-center text-sm transition-all duration-150 hover:bg-gray-50"
+              style={{
+                height:          '48px',
+                paddingLeft:     isActive ? '18px' : '24px', // compensate for 6px bar
+                borderLeft:      isActive ? '6px solid #E8B40A' : '6px solid transparent',
+                color:           isActive ? '#272935' : '#707070',
+                fontWeight:      isActive ? 700 : 400,
+                textDecoration:  'none',
+              }}
             >
               {label}
             </Link>

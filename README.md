@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Inua Mkulima Subsidy Program
 
-## Getting Started
+This is the frontend portal for the **Inua Mkulima Subsidy Program**, a dedicated dashboard for agro-dealers to manage farmer subsidies, process product deductions, and issue transaction receipts.
 
-First, run the development server:
+## Tech Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS + Custom Design System tokens
+- **Icons**: Lucide React / Custom SVGs
+- **State Management**: React Hooks + `sessionStorage` (for cart persistence)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Local Setup Instructions
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Install Dependencies**
+   Make sure you have Node.js installed, then run:
+   ```bash
+   npm install
+   ```
+   *(or `yarn install` / `pnpm install` depending on your preference)*
 
-## Learn More
+2. **Run the Development Server**
+   Start the local server:
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-To learn more about Next.js, take a look at the following resources:
+3. **Build for Production**
+   When ready to deploy, run:
+   ```bash
+   npm run build
+   npm start
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Implementation Approach
 
-## Deploy on Vercel
+Building this interface required a strong focus on **pixel-perfect design parity** and **bulletproof state management** across a multi-step workflow. Here's a quick breakdown of how we approached the architecture:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 1. Pixel-Perfect UI & Layout
+We combined the speed of **Tailwind CSS** with specific, targeted inline styles whenever we needed to exactly match the Adobe XD specifications. For example, the `Topbar` and `Sidebar` layouts were carefully structured using CSS Flexbox to ensure the header spans the entire width seamlessly, while components like the `ProductRow` use exact color hexes (`#707070`, `#272935`) and pixel dimensions to match the premium, branded look.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 2. State Management & Hydration
+Instead of relying on complex global stores like Redux for the cart, we used a custom hook (`useProductSelection.ts`) backed by `sessionStorage`. This keeps the app lightweight while ensuring the cart survives page refreshes. 
+
+To prevent the dreaded Next.js hydration errors (where the server HTML doesn't match the client HTML), we implemented an `isHydrated` flag. The app waits for the client to fully mount and read from `sessionStorage` before attempting to render the cart or perform any redirects on the Summary page.
+
+### 3. Modal-Driven Workflows
+To keep the user experience seamless, we moved away from routing to dedicated pages for success messages and receipts. Instead, we architected a modal-driven flow (`SuccessModal` and `ReceiptModal`). The dashboard listens for URL query parameters (like `?payment=success`) to trigger these overlays, keeping the agro-dealer grounded in the main dashboard view.

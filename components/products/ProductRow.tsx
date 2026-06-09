@@ -1,7 +1,5 @@
 'use client'
 
-import { Plus } from 'lucide-react'
-
 interface ProductRowProps {
   name:  string
   price: number
@@ -10,19 +8,31 @@ interface ProductRowProps {
 
 export function ProductRow({ name, price, onAdd }: ProductRowProps) {
   return (
-    <tr className="border-b border-brand-border hover:bg-gray-50 transition-colors">
-      <td className="py-3 px-4 text-sm text-brand-ink font-medium">{name}</td>
-      <td className="py-3 px-4 text-sm text-brand-muted text-right">
-        KES {price.toFixed(2)}
+    <tr className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+      <td className="py-2.5 px-4 text-sm" style={{ color: '#707070' }}>{name}</td>
+      <td className="py-2.5 px-4 text-sm text-right" style={{ color: '#707070' }}>
+        {price.toLocaleString('en-KE')} kes
       </td>
-      <td className="py-3 px-4 text-right">
+      <td className="py-2.5 px-3 text-right w-10">
+        {/* Outlined circle ⊕ matching design */}
         <button
           type="button"
           onClick={onAdd}
           aria-label={`Add ${name}`}
-          className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-brand-green text-white hover:bg-green-700 transition-all duration-150 active:scale-95"
+          className="inline-flex items-center justify-center transition-all duration-150 hover:opacity-70 active:scale-95"
+          style={{
+            width:  '22px',
+            height: '22px',
+            borderRadius: '50%',
+            border: '2px solid #272935',
+            background: 'transparent',
+            color: '#272935',
+            fontSize: '16px',
+            lineHeight: 1,
+            cursor: 'pointer',
+          }}
         >
-          <Plus className="w-4 h-4" />
+          +
         </button>
       </td>
     </tr>
