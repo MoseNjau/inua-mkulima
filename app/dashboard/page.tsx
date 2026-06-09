@@ -133,16 +133,6 @@ function DashboardInner() {
                   </button>
                 </div>
               </div>
-
-              <button
-                id="go-to-selection-btn"
-                onClick={() => router.push('/dashboard/products')}
-                className="flex items-center gap-2 text-white px-4 py-2 rounded-md font-semibold text-sm hover:bg-yellow-500 transition-colors"
-                style={{ background: '#E8B40A' }}
-              >
-                <ShoppingBasket className="w-4 h-4" />
-                Select Products
-              </button>
             </div>
           </>
         )}
