@@ -14,7 +14,7 @@ export default function ProductsPage() {
   const router  = useRouter()
   const [query, setQuery] = useState('')
 
-  const { data, isLoading } = useProducts()
+  const { data, isLoading } = useProducts(1, 100)
   const { items, addItem, removeItem, totalDeduction, totalAmount } = useProductSelection()
 
   const filtered = data?.products.filter(p =>

@@ -7,7 +7,7 @@ import { ProductCard, ProductCardSkeleton } from '@/components/products/ProductC
 import { useProducts } from '@/hooks/useProducts'
 import { useProductSelection } from '@/hooks/useProductSelection'
 import { SuccessModal } from '@/components/receipt/SuccessModal'
-import { Search, AlertCircle, ShoppingBasket } from 'lucide-react'
+import { Search, AlertCircle, ShoppingBasket, ChevronLeft, ChevronRight } from 'lucide-react'
 import type { Product, TransactionReceipt } from '@/types'
 
 // Must be wrapped in Suspense because it uses useSearchParams
@@ -15,9 +15,11 @@ function DashboardInner() {
   const router              = useRouter()
   const searchParams        = useSearchParams()
   const [query, setQuery]   = useState('')
+  const [page, setPage]     = useState(1)
   const [receipt, setReceipt] = useState<TransactionReceipt | null>(null)
 
-  const { data, isLoading, isError, refetch } = useProducts()
+  const LIMIT = 12
+  const { data, isLoading, isError, refetch, isPlaceholderData } = useProducts(page, LIMIT)
   const { clearCart } = useProductSelection()
 
   // Detect ?payment=success → load receipt from sessionStorage and show modal
@@ -104,8 +106,34 @@ function DashboardInner() {
                 />
               ))}
             </div>
+            
+            {/* Pagination and Footer Actions */}
             <div className="flex items-center justify-between text-xs text-brand-muted pb-4">
-              <span>{filtered.length} products{query ? ` matching "${query}"` : ''}</span>
+              <div className="flex items-center gap-6">
+                <span>{filtered.length} products on page{query ? ` matching "${query}"` : ''}</span>
+                
+                {/* Pagination Controls */}
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => setPage(p => Math.max(1, p - 1))}
+                    disabled={page === 1 || isPlaceholderData}
+                    className="p-1 rounded border border-gray-200 bg-white disabled:opacity-40 hover:bg-gray-50 transition-colors"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <span className="font-semibold" style={{ color: '#272935' }}>
+                    Page {page} of {Math.ceil((data?.total ?? 0) / LIMIT) || 1}
+                  </span>
+                  <button
+                    onClick={() => setPage(p => Math.min(Math.ceil((data?.total ?? 0) / LIMIT), p + 1))}
+                    disabled={page >= Math.ceil((data?.total ?? 0) / LIMIT) || isPlaceholderData}
+                    className="p-1 rounded border border-gray-200 bg-white disabled:opacity-40 hover:bg-gray-50 transition-colors"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+
               <button
                 id="go-to-selection-btn"
                 onClick={() => router.push('/dashboard/products')}
