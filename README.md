@@ -39,15 +39,15 @@ This is the frontend portal for the **Inua Mkulima Subsidy Program**, a dedicate
 
 ## Implementation Approach
 
-Building this interface required a strong focus on **pixel-perfect design parity** and **bulletproof state management** across a multi-step workflow. Here's a quick breakdown of how we approached the architecture:
+Building this interface required a strong focus on **pixel-perfect design parity** and **bulletproof state management** across a multi-step workflow. Here's a brief breakdown of my approach:
 
 ### 1. Pixel-Perfect UI & Layout
-We combined the speed of **Tailwind CSS** with specific, targeted inline styles whenever we needed to exactly match the Adobe XD specifications. For example, the `Topbar` and `Sidebar` layouts were carefully structured using CSS Flexbox to ensure the header spans the entire width seamlessly, while components like the `ProductRow` use exact color hexes (`#707070`, `#272935`) and pixel dimensions to match the premium, branded look.
+I used **Tailwind CSS** combined with targeted inline styles to exactly match the Adobe XD specifications. For instance, I structured the `Topbar` and `Sidebar` layouts using Flexbox to ensure the header spans the entire width seamlessly. I also applied exact color hexes (like `#707070`, `#272935`) and strict pixel dimensions to ensure components like the `ProductRow` match the provided brand kit.
 
 ### 2. State Management & Hydration
-Instead of relying on complex global stores like Redux for the cart, we used a custom hook (`useProductSelection.ts`) backed by `sessionStorage`. This keeps the app lightweight while ensuring the cart survives page refreshes. 
+Instead of relying on heavy state libraries like Redux, I built a custom hook (`useProductSelection.ts`) utilizing `sessionStorage`. This keeps the application lightweight while ensuring the cart data persists across page refreshes. 
 
-To prevent the dreaded Next.js hydration errors (where the server HTML doesn't match the client HTML), we implemented an `isHydrated` flag. The app waits for the client to fully mount and read from `sessionStorage` before attempting to render the cart or perform any redirects on the Summary page.
+To prevent Next.js hydration errors (where server and client HTML mismatch), I implemented an `isHydrated` flag. This guarantees the application waits for the client to mount and read from `sessionStorage` before rendering the cart or performing any redirects on the Summary page.
 
 ### 3. Modal-Driven Workflows
-To keep the user experience seamless, we moved away from routing to dedicated pages for success messages and receipts. Instead, we architected a modal-driven flow (`SuccessModal` and `ReceiptModal`). The dashboard listens for URL query parameters (like `?payment=success`) to trigger these overlays, keeping the agro-dealer grounded in the main dashboard view.
+To maintain a seamless user experience, I avoided standard routing for success messages and receipts. Instead, I architected a modal-driven flow (`SuccessModal` and `ReceiptModal`). The dashboard listens for URL query parameters (like `?payment=success`) to trigger these overlays, keeping the user grounded in the main dashboard view.
