@@ -6,6 +6,7 @@ import { ChevronLeft } from 'lucide-react'
 import { useProductSelection } from '@/hooks/useProductSelection'
 import { useAuth } from '@/hooks/useAuth'
 import { OtpInput } from '@/components/ui/OtpInput'
+import { MOCK_RECEIPT } from '@/lib/constants'
 import type { TransactionReceipt } from '@/types'
 
 const OTP_COUNTDOWN = 90
@@ -51,9 +52,9 @@ export default function SummaryPage() {
       referenceNumber: generateRef(),
       date:            todayFormatted(),
       walletName:      'Inua Mkulima Wallet',
-      farmerName:      'Gladys Kivuva', // Hardcoded for prototype as per removed form
-      farmerId:        '30123456',
-      farmerPhone:     '0721234715',
+      farmerName:      MOCK_RECEIPT.farmerName,
+      farmerId:        MOCK_RECEIPT.farmerId,
+      farmerPhone:     MOCK_RECEIPT.farmerPhone,
       agroDealerName:  user ? `${user.firstName} ${user.lastName}` : 'Agro-dealer',
       merchantId:      user ? user.username.toUpperCase() : '—',
       phoneNumber:     user?.phone ?? '—',
@@ -176,7 +177,9 @@ export default function SummaryPage() {
       {/* OTP Area */}
       <div className="flex flex-col items-center mt-2 gap-4">
         <p className="text-xs" style={{ color: '#707070' }}>
-          Enter the <strong>verification code</strong> sent to the parent at <strong>072******715</strong> via SMS.
+          Enter the <strong>verification code</strong> sent to the parent at <strong>
+            {MOCK_RECEIPT.farmerPhone.slice(0,3)}******{MOCK_RECEIPT.farmerPhone.slice(-3)}
+          </strong> via SMS.
         </p>
         
         <OtpInput value={otp} onChange={v => { setOtp(v); setOtpErr('') }} />

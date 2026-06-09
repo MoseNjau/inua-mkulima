@@ -4,9 +4,9 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const navItems = [
-  { label: 'Dashboard',    href: '/dashboard' },
-  { label: 'Transactions', href: '/dashboard/transactions' },
-  { label: 'Reports',      href: '/dashboard/reports' },
+  { label: 'Dashboard',    href: '/dashboard',              activePaths: ['/dashboard', '/dashboard/products', '/dashboard/summary'] },
+  { label: 'Transactions', href: '/dashboard/transactions', activePaths: ['/dashboard/transactions'] },
+  { label: 'Reports',      href: '/dashboard/reports',      activePaths: ['/dashboard/reports'] },
 ]
 
 export function Sidebar() {
@@ -15,11 +15,8 @@ export function Sidebar() {
   return (
     <aside className="w-52 bg-white border-r border-gray-200 flex flex-col flex-shrink-0">
       <nav className="flex-1 pt-6" aria-label="Sidebar navigation">
-        {navItems.map(({ label, href }) => {
-          const isActive =
-            href === '/dashboard'
-              ? pathname === '/dashboard'
-              : pathname.startsWith(href)
+        {navItems.map(({ label, href, activePaths }) => {
+          const isActive = activePaths.some(p => pathname === p || pathname.startsWith(`${p}/`))
 
           return (
             <Link
